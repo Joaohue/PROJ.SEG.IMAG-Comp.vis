@@ -1,0 +1,34 @@
+void setup() {
+  size(682, 512);
+  noLoop();
+}
+
+void draw() {
+  PImage img = loadImage("B1.jpg");
+  PImage imgPB = createImage(img.width, img.height, RGB);
+
+  for (int y = 0; y < img.height; y++) {
+    for (int x = 0; x < img.width; x++) {
+      int pos = y*img.width + x;
+      int valor = (int) red(img.pixels[pos]);
+      imgPB.pixels[pos] = color(valor);
+    }
+  }
+
+//Filtro de limiarização
+  int limiar = 115;
+  for (int y = 0; y < img.height; y++) {
+    for (int x = 0; x < img.width; x++) {
+      int pos = y*img.width + x;
+      int valor = (int) red(imgPB.pixels[pos]);
+      if(valor >= limiar) valor = 255;
+      else valor = 0;
+      if(y < 0) valor = 0;
+      if(x < 0) valor = 0;
+      imgPB.pixels[pos] = color(valor);
+    }
+  }
+
+  image(imgPB, 0, 0);
+  save("PBRedSegCort.jpg");
+}
